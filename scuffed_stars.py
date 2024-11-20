@@ -1,43 +1,32 @@
-camX=0
-camY=0
+#CONFIGURATION
 import kandinsky as k
-class rectangle:
-    def __init__(self,x,y,width,height,color):
+class shape:
+    def __init__(self,x,y,color):
         self.x=x
         self.y=y
+        self.color=color
+    def putdata(self,k,l,v):
+        colorS=""
+        colorB=[str(bin(e))[2:].zfill(8) for e in self.color]
+        for i in range(16):
+                colorS=colorB[(1+i)%3][i//3]+colorS
+        colorS=colorS[:k]+str(bin(v))[2:].zfill(l)[-l:][::-1]+colorS[k+l:]
+        colorNB=['' for e in range(3)]
+        for i in range(16):
+            colorNB[(1-i)%3]+=colorS[i]
+        colorN=[int(e.zfill(8)[::-1],2) for e in colorNB]
+        self.color=tuple(colorN)
+class rectangle(shape):
+    def __init__(self,x,y,width,height,color):
+        super().__init__(self,x,y,color)
         self.height=height
         self.width=width
-        self.color=color
-    def putdata(self,k,l,v):
-        colorS=""
-        colorB=[str(bin(e))[2:].zfill(8) for e in self.color]
-        for i in range(16):
-                colorS=colorB[(1+i)%3][i//3]+colorS
-        colorS=colorS[:k]+str(bin(v))[2:].zfill(l)[-l:][::-1]+colorS[k+l:]
-        colorNB=['' for e in range(3)]
-        for i in range(16):
-            colorNB[(1-i)%3]+=colorS[i]
-        colorN=[int(e.zfill(8)[::-1],2) for e in colorNB]
-        self.color=tuple(colorN)
     def render(self):
         k.fill_rect(self.x-camX,self.y-camY,self.height,self.width,(0,0,0))
-class circle:
+class circle(shape):
     def __init__(self,x,y,radius,color):
-        self.x=x
-        self.y=y
+        super().__init__(self,x,y,color)
         self.radius=radius
-        self.color=color
-    def putdata(self,k,l,v):
-        colorS=""
-        colorB=[str(bin(e))[2:].zfill(8) for e in self.color]
-        for i in range(16):
-                colorS=colorB[(1+i)%3][i//3]+colorS
-        colorS=colorS[:k]+str(bin(v))[2:].zfill(l)[-l:][::-1]+colorS[k+l:]
-        colorNB=['' for e in range(3)]
-        for i in range(16):
-            colorNB[(1-i)%3]+=colorS[i]
-        colorN=[int(e.zfill(8)[::-1],2) for e in colorNB]
-        self.color=tuple(colorN)
     def render(self):
         k.fill_circle(self.x-camX,self.y-camY,self.height,self.width,(0,0,0))
 class wall(rectangle):
@@ -57,7 +46,7 @@ class water(rectangle):
 class bush(rectangle):
     def __init__(self,x,y,width,height,color):
         super().__init__(x,y,width,height,color)
-        super().putdata(0,3,2)
+        super().putata(0,3,2)
 class projectile(circle):
     def __init__(self,x,y,radius,pierce,wallbreak,damage,team):
         super().__init__(x,y,radius,color)
@@ -97,3 +86,23 @@ def getdata(c,k,l):
         colorS=colorB[(1+i)%3][i//3]+colorS
     colorV=colorS[k:k+l]
     return int(colorV[::-1],2)
+def refreshScreen(color=(255,255,255)):
+    k.fill_rect(0,0,320,222,color)
+def processEntities(entities):
+    wallsTick
+    projectilesTick(entities['projectiles'])
+def projectilesTick(pr):
+    pass
+#GAME SETUP
+camX=0
+camY=0
+Entities={'walls':[],
+          'water':[],
+          'bushes':[],
+          'projectiles':[]
+          }
+
+#GAME LOOP
+while True:
+    refreshScreen()
+    processEntities(Entities)

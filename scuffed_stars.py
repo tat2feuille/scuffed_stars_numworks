@@ -138,15 +138,15 @@ def bushesTick(bs):
     for e in bs:
         c=k.get_pixel(e.x-camX,e.y-camY)
         if getdata(c,0,3)==3:
-            if getdata(4,1)==1:
+            if getdata(c,4,1)==1:
                 del e
 
 def waterTick(wt):
     for e in wt:
         c=k.get_pixel(e.x-camX,e.y-camY)
         if getdata(c,0,3)==3:
-            if getdata(4,1)==1:
-                if getdata(3,1)==0:
+            if getdata(c,4,1)==1:
+                if getdata(c,3,1)==0:
                     e.render()
                 del e
 
@@ -154,8 +154,8 @@ def wallsTick(wl):
     for e in wt:
         c=k.get_pixel(e.x-camX,e.y-camY)
         if getdata(c,0,3)==3:
-            if getdata(4,1)==1:
-                if getdata(3,1)==0:
+            if getdata(c,4,1)==1:
+                if getdata(c,3,1)==0:
                     e.render()
                 del e
 
